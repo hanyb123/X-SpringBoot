@@ -39,7 +39,7 @@ public class SysLoginController extends AbstractController {
 	@AuthIgnore
 	@RequestMapping("/")
 	public R hello(){
-		return R.ok("hello welcome to use x-springboot");
+		return R.ok("hello welcome to use x-springboot!!!!!!!!");
 	}
 
 	/**

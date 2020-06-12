@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>X-SpringBoot</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="css/all-skins.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="panel panel-default" :style="styles" id="app">
+    <div class="btn-group-vertical btn-group-sm" role="group" aria-label="Vertical button group" style="width: 20%;height: inherit; display: inline-block">
+        <br>
+        <br>
+        <div class="btn-group" role="group">
+            <button id="btnGroupVerticalDrop1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                模式选择
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1">
+                <li><a href="#">提问模式</a></li>
+                <li><a href="#">介绍模式</a></li>
+            </ul>
+        </div>
+        <br>
+        <button type="button" class="btn " @click="">背景设置</button>
+        <br>
+        <button type="button" class="btn ">Button</button>
+        <br>
+        <button type="button" class="btn btn-google">Button</button>
+    </div>
+    <div style="width: 80%; display: inline-block">
+
+    </div>
+</div>
+<script src="libs/jquery.min.js"></script>
+<script src="plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="libs/vue.min.js"></script>
+<script src="libs/bootstrap.min.js"></script>
+<script src="libs/app.js"></script>
+<script src="libs/three.min.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+       el: "#app",
+       data: {
+           styles: {
+               backgroundImage: 'url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1591090118839&di=c92af17e1bb87f0039ec99deff513f1c&imgtype=0&src=http%3A%2F%2Fwww.51pptmoban.com%2Fd%2Ffile%2F2012%2F08%2F21%2F4299a7be487f9611e60ee34f86a06f7f.jpg)',
+               backgroundSize: 'cover',
+               height: 'inherit',
+               border: '1px'
+           }
+       }
+    });
+
+</script>
+
+<style>
+    html {
+        height: 100% !important;
+    }
+
+    body {
+        height: 100% !important;
+    }
+
+</style>
+
+</body>
+</html>

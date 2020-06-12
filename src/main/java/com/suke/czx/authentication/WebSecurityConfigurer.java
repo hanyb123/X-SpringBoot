@@ -61,6 +61,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         permitAll.add("/error");
         permitAll.add("/v2/**");
         permitAll.add(Constant.TOKEN_ENTRY_POINT_URL);
+        permitAll.add(Constant.TOKEN_REGISTER);
         String[] urls = permitAll.stream().distinct().toArray(String[]::new);
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
         registry.antMatchers(urls).permitAll().anyRequest().authenticated().and().csrf().disable();

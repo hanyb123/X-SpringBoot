@@ -1,70 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>X-SpringBoot快速开发平台</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="css/all-skins.min.css">
-  <link rel="stylesheet" href="css/main.css">
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>X-SpringBoot快速开发平台</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="css/all-skins.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body class="hold-transition login-page skin-black-light">
 <div id="canvascontainer" ref='can'></div>
 <div class="login-box" id="app" v-cloak>
-  <div class="login-logo">
-    <b>X-SpringBoot</b>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-      <p class="login-box-msg">管理员登录</p>
-      <div v-if="error" class="alert alert-danger alert-dismissible">
-        <h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-circle"></i> {{errorMsg}}</h4>
-      </div>
-      <div class="form-group has-feedback">
-          <input type="text" class="form-control" v-model="username" placeholder="账号">
-          <span class="glyphicon glyphicon-user form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-          <input type="password" class="form-control" v-model="password" placeholder="密码">
-          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-          <input type="text" class="form-control" v-model="captcha" @keyup.enter="login" placeholder="验证码">
-          <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-          <img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" @click="refreshCode">
-          &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" @click="refreshCode">点击刷新</a>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-          </div>
+    <div class="login-logo">
+        <b>X-SpringBoot</b>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">管理员登录</p>
+        <div v-if="error" class="alert alert-danger alert-dismissible">
+            <h4 style="margin-bottom: 0px;"><i class="fa fa-exclamation-circle"></i> {{errorMsg[errNum]}}</h4>
         </div>
-        <!-- /.col -->
-        <div class="col-xs-14">
-          <button type="button" class="btn btn-default btn-block btn-flat" @click="login">登录</button>
+        <div class="form-group has-feedback">
+            <input type="text" class="form-control" v-model.lazy="username" placeholder="账号,小于15位">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span style="color: red;font-size: large" id="username" v-if="seeName" >小老弟，说好的1到15位哦</span>
+            <span :class="nameMessageClass" id="usernameForReg" v-if="seeNameOfReg" >{{exitName}}</span>
         </div>
-        <!-- /.col -->
-      </div>
-    <!-- /.social-auth-links -->
+        <div class="form-group has-feedback">
+            <input type="password" class="form-control" v-model.lazy="password" placeholder="密码，小于15位">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <span style="color: red;font-size: large" id="password" v-if="seePass" >小老弟，说好的1到15位哦</span>
+        </div>
+        <div class="form-group has-feedback">
+            <input type="text" class="form-control" v-model="captcha" @keyup.enter="login" placeholder="验证码">
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+            <img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" @click="refreshCode">
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" @click="refreshCode">点击刷新</a>
+        </div>
 
-  </div>
-  <!-- /.login-box-body -->
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="checkbox icheck">
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-14">
+                <button type="button" :disabled="seeName||seePass" class="btn btn-default btn-block btn-flat" @click="login">登录</button>
+            </div>
+            <br>
+            <div class="col-xs-14">
+                <button type="button" :disabled="seeName||seePass" class="btn btn-default btn-block btn-flat" @click="register">注册</button>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.social-auth-links -->
+
+    </div>
+    <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
 <script src="libs/jquery.min.js"></script>
@@ -84,20 +91,28 @@
     var windowHalfX = window.innerWidth / 2;
     var windowHalfY = window.innerHeight / 2;
 
-    var randomStr = Math.floor(Math.random()*999999999);
+    var randomStr = Math.floor(Math.random() * 999999999);
 
     var vm = new Vue({
-        el:'#app',
-        data:{
+        el: '#app',
+        data: {
             username: '',
             password: '',
             captcha: '',
+            seeNameOfReg: false,
+            nameMessageClass: 'cannotUseNameMessage',
+            exitName: '',
+            seeName: false,
+            seePass: false,
             error: false,
-            errorMsg: '',
-            src: baseURL + "sys/code/"+randomStr
+            errNum: -1,
+            errorMsg: ['账号密码不对，是想点注册吗大兄弟？', '啥情况啊老哥？还是不对啊？',
+                '要不再想想？', '嗯，再试一次吧……', '算了吧……', '求求你放弃吧……',
+                '既然这么执着，那试着找找作者？', '真的没有别的提示了。。。', '你咋这么欠呢？？？'],
+            src: baseURL + "sys/code/" + randomStr
         },
-        beforeCreate: function(){
-            if(self != top){
+        beforeCreate: function () {
+            if (self != top) {
                 top.location.href = self.location.href;
             }
         },
@@ -135,23 +150,50 @@
             animate();
         },
         methods: {
-            refreshCode: function(){
-                randomStr = Math.floor(Math.random()*999999999);
+            refreshCode: function () {
+                randomStr = Math.floor(Math.random() * 999999999);
                 this.src = baseURL + "sys/code/" + randomStr;
             },
             login: function () {
-                var data = "username="+vm.username+"&password="+vm.password+"&captcha="+vm.captcha+"&randomStr="+randomStr;
+                var data = "username=" + vm.username + "&password=" + vm.password + "&captcha=" + vm.captcha + "&randomStr=" + randomStr;
                 $.ajax({
                     type: "POST",
                     url: baseURL + "token/login",
                     data: data,
                     dataType: "json",
-                    success: function(r){
-                        if(r.code == 0){//登录成功
-                            parent.location.href ='index.html';
-                        }else{
-                            vm.error = true;
-                            vm.errorMsg = r.msg;
+                    success: function (r) {
+                        if (r.code == 0) {//登录成功
+                            parent.location.href = 'index.html';
+                        } else {
+                            if (r.msg.indexOf("验证码") === -1){
+                                vm.error = true;
+                                if(vm.errNum <= 7) {
+                                    vm.errNum += 1;
+                                } else {
+                                    vm.errNum = 0;
+                                }
+                            }
+                            vm.refreshCode();
+                        }
+                    }
+                });
+            },
+            register: function () {
+                var data = "username=" + vm.username + "&password=" + vm.password + "&captcha=" + vm.captcha + "&randomStr=" + randomStr;
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "sys/user/register",
+                    data: data,
+                    dataType: "json",
+                    success: function (r) {
+                        if (r.code == 0) {//登录成功
+                            parent.location.href = 'index.html';
+                        } else {
+                            if (r.msg.indexOf("验证码") === -1){
+                                vm.exitName = r.msg;
+                                vm.nameMessageClass = "cannotUseNameMessage";
+                                vm.seeNameOfReg = true;
+                            }
                             vm.refreshCode();
                         }
                     }
@@ -160,6 +202,56 @@
         }
     });
 
+    vm.$watch('username', function(nval, oval) {
+        if (isBlank(nval) || nval.toString().length > 15) {
+            vm.seeName = true;
+        } else {
+            vm.seeName = false;
+        }
+        //实时判断账号是否存在
+        if (vm.seeNameOfReg === true) {
+            usernameExits();
+        }
+    });
+
+    //实时判断账号是否存在
+    function usernameExits() {
+        var data = "username=" + vm.username + "&password=" + vm.password + "&captcha=" + vm.captcha + "&randomStr=" + randomStr;
+        var user = {username: vm.username, password: vm.password};
+        $.ajax({
+            type: "POST",
+            url: baseURL + "sys/user/getUserByName",
+            contentType: "application/json",
+            data: JSON.stringify(user),
+            dataType: "json",
+            success: function (r) {
+                if (r.code == 0) {//登录成功
+                    vm.nameMessageClass = "canUserNameMessage";
+                    vm.exitName = "此名可用";
+                    vm.refreshCode();
+                } else {
+                    vm.exitName = r.msg;
+                    vm.nameMessageClass = "cannotUseNameMessage";
+                    vm.seeNameOfReg = true;
+
+                    vm.refreshCode();
+                }
+            }
+        });
+    }
+
+    vm.$watch('password', function(nval, oval) {
+        if (isBlank(nval) || nval.toString().length > 15) {
+            vm.seePass = true;
+        } else {
+            vm.seePass = false;
+        }
+    });
+    
+    function validator() {
+        return isBlank(vm.username) || isBlank(vm.password) || vm.username.toString().length > 15
+            || vm.password.toString().length > 15;
+    }
 
 
     // animate();
@@ -232,17 +324,29 @@
     .login-page {
         background-color: #929aab;
     }
+
     .login-box-body {
         background-color: #a1a8b5;
     }
+
     .svg-container {
         padding: 6px 5px 6px 15px;
         color: #889aa4;
     }
 
-    #canvascontainer{
+    #canvascontainer {
         z-index: -10000;
         position: absolute;
+    }
+
+    .canUserNameMessage {
+        color: green;
+        font-size: large;
+    }
+
+    .cannotUseNameMessage {
+        color: red;
+        font-size: large;
     }
 
 </style>

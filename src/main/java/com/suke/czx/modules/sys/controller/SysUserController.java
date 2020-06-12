@@ -3,6 +3,7 @@ package com.suke.czx.modules.sys.controller;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.suke.czx.common.annotation.AuthIgnore;
 import com.suke.czx.common.annotation.SysLog;
 import com.suke.czx.common.base.AbstractController;
 import com.suke.czx.common.utils.Constant;
@@ -19,6 +20,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -112,9 +115,24 @@ public class SysUserController extends AbstractController {
 		user.setRoleIdList(roleIdList);
 		return R.ok().put("user", user);
 	}
+
+	/**
+	 * 根据用户名查询用户是否存在
+	 */
+	@AuthIgnore
+	@RequestMapping("/getUserByName")
+	public R judgeUernameCanUse(@RequestBody SysUser user){
+		String username = user.getUsername();
+		SysUser queryUser =	sysUserService.getOne(new QueryWrapper<SysUser>().eq("username", username));
+		if (queryUser != null) {
+			return R.error(1, "用户名已存在");
+		} else {
+			return R.ok();
+		}
+	}
 	
 	/**
-	 * 保存用户
+	 * 管理员操作保存用户
 	 */
 	@SysLog("保存用户")
 	@RequestMapping("/save")
@@ -125,6 +143,35 @@ public class SysUserController extends AbstractController {
 		user.setCreateUserId(getUserId());
 		sysUserService.saveUserRole(user);
 		
+		return R.ok();
+	}
+
+	/**
+	 * 用户注册
+	 */
+	@AuthIgnore
+	@SysLog("用户注册")
+	@RequestMapping("/register")
+	public R register(HttpServletRequest request){
+		SysUser user = new SysUser();
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		SysUser user1 =	sysUserService.getOne(new QueryWrapper<SysUser>().eq("username", username));
+		if (user1 != null) {
+			return R.error(1, "用户名已存在");
+		}
+		List<Long> roleIdList = new ArrayList<>();
+		long roleId = 9L;
+		roleIdList.add(roleId);
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setRoleIdList(roleIdList);
+		user.setStatus(1);
+		user.setEmail("321@163.com");
+		ValidatorUtils.validateEntity(user);
+		user.setCreateUserId(getUserId());
+		sysUserService.saveUserRole(user);
+
 		return R.ok();
 	}
 	

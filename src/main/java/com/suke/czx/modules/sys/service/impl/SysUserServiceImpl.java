@@ -106,6 +106,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper,SysUser> imple
 		if(user.getCreateUserId() == Constant.SUPER_ADMIN){
 			return ;
 		}
+
+		//如果是正常新增普通用户，无需判断
+		if (user.getRoleIdList().get(0) == 9L) {
+			return;
+		}
 		
 		//查询用户创建的角色列表
 		List<Long> roleIdList = sysRoleService.queryRoleIdList(user.getCreateUserId());
